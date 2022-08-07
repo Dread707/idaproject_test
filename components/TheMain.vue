@@ -1,8 +1,10 @@
 <template>
   <div class="m-5">
     <the-header />
-    <the-new-product-card />
-    <products-product-items/>
+    <div class="md:flex sm:flex-row mt-4 px-2">
+      <the-new-product-card />
+      <products-product-items />
+    </div>
   </div>
 </template>
 
