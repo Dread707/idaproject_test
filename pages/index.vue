@@ -8,7 +8,7 @@ export default {
 }
 </script>
 <style lang="scss">
-$background: #fffefbcc;
+$background: rgba(255, 254, 251, 0.8);
 
 html {
   font-family: 'Source Sans Pro', sans-serif;
