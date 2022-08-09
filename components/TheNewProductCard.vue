@@ -46,19 +46,21 @@
           </label>
           <input
             id="image"
-            v-model="newProductForm.image.value"
+            v-model="newProductForm.srcImage.value"
             type="text"
             placeholder="Введите ссылку"
             class="form-input-text form-input w-full rounded-md bg-white py-3 px-6"
             :class="
-              newProductForm.image.isDisabled && !newProductForm.image.isValid
+              newProductForm.srcImage.isDisabled &&
+              !newProductForm.srcImage.isValid
                 ? 'invalid-input'
                 : ''
             "
           />
           <span
             v-if="
-              newProductForm.image.isDisabled && !newProductForm.image.isValid
+              newProductForm.srcImage.isDisabled &&
+              !newProductForm.srcImage.isValid
             "
             class="invalid-text"
             >Поле является обязательным</span
@@ -71,6 +73,9 @@
           <input
             id="price"
             v-model="newProductForm.price.value"
+            v-price
+            pattern="[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}"
+            maxlength="9"
             type="text"
             placeholder="Введите цену"
             class="form-input-text form-input w-full rounded-md bg-white py-3 px-6"
@@ -89,6 +94,9 @@
           >
         </div>
       </form>
+      <span v-if="duplicateProduct" class="invalid-text"
+        >Такой товар уже существует в списке</span
+      >
       <button-component :is-disabled="isDisabled" @event="submit" />
     </div>
   </div>
@@ -100,16 +108,36 @@ import ButtonComponent from '~/components/assets/buttons/ButtonComponent'
 export default {
   name: 'TheNewProductCard',
   components: { ButtonComponent },
+  props: {
+    duplicateProduct: {
+      type: Boolean,
+      default: () => {
+        return false
+      },
+    },
+  },
   data() {
     return {
       newProductForm: {
         name: { value: '', isDisabled: true, isValid: true },
         info: { value: '' },
-        image: { value: '', isDisabled: true, isValid: true },
+        srcImage: { value: '', isDisabled: true, isValid: true },
         price: { value: '', isDisabled: true, isValid: true },
       },
       isDisabled: true,
     }
+  },
+  computed: {
+    newProduct() {
+      // return Object.values(this.newProductForm).map(el => el.value)
+      const newProductValues = {}
+      for (const el in this.newProductForm) {
+        newProductValues[el] = this.newProductForm[el].value
+      }
+      newProductValues.id = Date.now()
+      newProductValues.price = +newProductValues.price.replace(/ /g, '')
+      return newProductValues
+    },
   },
   watch: {
     'newProductForm.name': {
@@ -119,10 +147,12 @@ export default {
       },
       deep: true,
     },
-    'newProductForm.image': {
+    'newProductForm.srcImage': {
       handler() {
-        this.newProductForm.image.isDisabled = !this.newProductForm.image.value
-        this.newProductForm.image.isValid = !!this.newProductForm.image.value
+        this.newProductForm.srcImage.isDisabled =
+          !this.newProductForm.srcImage.value
+        this.newProductForm.srcImage.isValid =
+          !!this.newProductForm.srcImage.value
       },
       deep: true,
     },
@@ -137,7 +167,7 @@ export default {
       handler() {
         this.isDisabled = !(
           !this.newProductForm.name.isDisabled &&
-          !this.newProductForm.image.isDisabled &&
+          !this.newProductForm.srcImage.isDisabled &&
           !this.newProductForm.price.isDisabled
         )
       },
@@ -152,6 +182,10 @@ export default {
           this.isDisabled = true
         }
       }
+      if (!this.isDisabled) this.createNewProduct()
+    },
+    createNewProduct() {
+      this.$emit('createNewProduct', this.newProduct)
     },
   },
 }
