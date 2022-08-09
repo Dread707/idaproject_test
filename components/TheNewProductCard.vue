@@ -23,7 +23,7 @@
               newProductForm.name.isDisabled && !newProductForm.name.isValid
             "
             class="invalid-text"
-          >Поле является обязательным</span
+            >Поле является обязательным</span
           >
         </div>
         <div class="mb-5">
@@ -41,8 +41,8 @@
         <div class="mb-5">
           <label for="image" class="mb-3 block form-label-text">
             Ссылка на изображение товара<span
-            class="required-input ml-1"
-          ></span>
+              class="required-input ml-1"
+            ></span>
           </label>
           <input
             id="image"
@@ -61,7 +61,7 @@
               newProductForm.image.isDisabled && !newProductForm.image.isValid
             "
             class="invalid-text"
-          >Поле является обязательным</span
+            >Поле является обязательным</span
           >
         </div>
         <div class="mb-5">
@@ -72,6 +72,8 @@
             id="price"
             v-model="newProductForm.price.value"
             v-price
+            pattern="[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}"
+            maxlength="9"
             type="text"
             placeholder="Введите цену"
             class="form-input-text form-input w-full rounded-md bg-white py-3 px-6"
@@ -86,7 +88,7 @@
               newProductForm.price.isDisabled && !newProductForm.price.isValid
             "
             class="invalid-text"
-          >Поле является обязательным</span
+            >Поле является обязательным</span
           >
         </div>
       </form>
@@ -96,43 +98,43 @@
 </template>
 
 <script>
-import ButtonComponent from "~/components/assets/buttons/ButtonComponent";
+import ButtonComponent from '~/components/assets/buttons/ButtonComponent'
 
 export default {
-  name: "TheNewProductCard",
+  name: 'TheNewProductCard',
   components: { ButtonComponent },
   data() {
     return {
       newProductForm: {
-        name: { value: "", isDisabled: true, isValid: true },
-        info: { value: "" },
-        image: { value: "", isDisabled: true, isValid: true },
-        price: { value: "", isDisabled: true, isValid: true }
+        name: { value: '', isDisabled: true, isValid: true },
+        info: { value: '' },
+        image: { value: '', isDisabled: true, isValid: true },
+        price: { value: '', isDisabled: true, isValid: true },
       },
-      isDisabled: true
-    };
+      isDisabled: true,
+    }
   },
   watch: {
-    "newProductForm.name": {
+    'newProductForm.name': {
       handler() {
-        this.newProductForm.name.isDisabled = !this.newProductForm.name.value;
-        this.newProductForm.name.isValid = !!this.newProductForm.name.value;
+        this.newProductForm.name.isDisabled = !this.newProductForm.name.value
+        this.newProductForm.name.isValid = !!this.newProductForm.name.value
       },
-      deep: true
+      deep: true,
     },
-    "newProductForm.image": {
+    'newProductForm.image': {
       handler() {
-        this.newProductForm.image.isDisabled = !this.newProductForm.image.value;
-        this.newProductForm.image.isValid = !!this.newProductForm.image.value;
+        this.newProductForm.image.isDisabled = !this.newProductForm.image.value
+        this.newProductForm.image.isValid = !!this.newProductForm.image.value
       },
-      deep: true
+      deep: true,
     },
-    "newProductForm.price": {
+    'newProductForm.price': {
       handler() {
-        this.newProductForm.price.isDisabled = !this.newProductForm.price.value;
-        this.newProductForm.price.isValid = !!this.newProductForm.price.value;
+        this.newProductForm.price.isDisabled = !this.newProductForm.price.value
+        this.newProductForm.price.isValid = !!this.newProductForm.price.value
       },
-      deep: true
+      deep: true,
     },
     newProductForm: {
       handler() {
@@ -140,22 +142,22 @@ export default {
           !this.newProductForm.name.isDisabled &&
           !this.newProductForm.image.isDisabled &&
           !this.newProductForm.price.isDisabled
-        );
+        )
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     submit() {
       for (const prop in this.newProductForm) {
-        if (!this.newProductForm[prop].value && prop !== "info") {
-          this.newProductForm[prop].isVaild = false;
-          this.isDisabled = true;
+        if (!this.newProductForm[prop].value && prop !== 'info') {
+          this.newProductForm[prop].isVaild = false
+          this.isDisabled = true
         }
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

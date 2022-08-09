@@ -2,16 +2,16 @@
   <div class="flex flex-col product-container">
     <img
       class="aspect-video object-cover object-center"
-      src="https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/01/white-polaroid-onestep-2-instant-camera-featured-image-cropped.jpg"
+      :src="item.srcImage"
       alt=""
     />
     <div class="p-4">
-      <h1 class="mb-4 product-item-name">Наименование товара</h1>
+      <h1 class="mb-4 product-item-name">{{ item.name }}</h1>
       <p class="mb-5 product-item-description">
         Довольно-таки интересное описание товара в несколько строк.
         Довольно-таки интересное описание товара в несколько строк
       </p>
-      <span class="mb-2 product-item-price">10 000 руб.</span>
+      <span class="mb-2 product-item-price">{{ item.price }}</span>
     </div>
   </div>
 </template>
@@ -19,6 +19,14 @@
 <script>
 export default {
   name: 'ProductItem',
+  props: {
+    item: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+  },
 }
 </script>
 

@@ -1,16 +1,21 @@
-import Vue from "vue";
+import Vue from 'vue'
 
-Vue.directive("price", {
+Vue.directive('price', {
   bind(el) {
-    el.oninput = function(e) {
+    el.oninput = function (e) {
       if (!e.isTrusted) {
-        return;
+        return
       }
 
-      const x = this.value.replace(/\D/g, "").match(/\B(?=(\d{3})+(?!\d))/g);
-      console.log(x);
-    };
-  }
-});
-
-// onkeyup="this.value = this.value.replace(/[^\d]/g,'');"
+      const x = this.value
+        .replace(/\D/g, '')
+        .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g)
+      if (!!Number(x[0]) === false) {
+        this.value = 0
+      } else {
+        this.value = !x[1] ? x[0] : x[0] + ' ' + x[1] + (x[2] ? ' ' + x[2] : '')
+      }
+      el.dispatchEvent(new Event('input'))
+    }
+  },
+})
