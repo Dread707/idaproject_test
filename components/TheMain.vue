@@ -6,7 +6,10 @@
         :duplicate-product="duplicateProduct"
         @createNewProduct="createNewProduct"
       />
-      <products-product-items :products="products" />
+      <products-product-items
+        :products="products"
+        @deleteProduct="deleteProduct"
+      />
     </div>
   </div>
 </template>
@@ -130,6 +133,9 @@ export default {
           ].className = 'flex flex-col product-container fadeInLeft'
         }, 1)
       } else this.duplicateProduct = true
+    },
+    deleteProduct(id) {
+      console.log(id)
     },
   },
 }

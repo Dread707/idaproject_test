@@ -1,5 +1,6 @@
 <template>
   <div :id="product.id" class="flex flex-col product-container">
+    <delete-button-component @click="$emit('deleteProduct', product.id)" />
     <div class="img-container">
       <img
         class="aspect-video object-cover object-center"
@@ -23,8 +24,10 @@
 </template>
 
 <script>
+import DeleteButtonComponent from '@/components/assets/buttons/DeleteButtonComponent'
 export default {
   name: 'ProductItem',
+  components: { DeleteButtonComponent },
   props: {
     product: {
       type: Object,
@@ -40,6 +43,7 @@ export default {
 $text-color: #3f3f3f;
 
 .product-container {
+  position: relative;
   background: #fffefb;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.04), 0 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
