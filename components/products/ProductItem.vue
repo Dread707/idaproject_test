@@ -1,6 +1,8 @@
 <template>
-  <div :id="product.id" class="flex flex-col product-container">
-    <delete-button-component @click="$emit('deleteProduct', product.id)" />
+  <div :id="'product-' + product.id" class="flex flex-col product-container">
+    <delete-button-component
+      @clickDeleteButton="$emit('deleteProduct', product.id)"
+    />
     <div class="img-container">
       <img
         class="aspect-video object-cover object-center"
@@ -88,9 +90,25 @@ $text-color: #3f3f3f;
   }
 }
 
+.fadeOutLeft {
+  animation-name: fadeOutLeft;
+  animation-duration: 1s;
+}
+
 .fadeInLeft {
   animation-name: fadeInLeft;
   animation-duration: 1s;
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
 }
 
 @keyframes fadeInLeft {

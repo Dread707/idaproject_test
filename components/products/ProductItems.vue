@@ -23,8 +23,7 @@ export default {
   },
   methods: {
     handlerEventDelete(id) {
-      console.log(id)
-      this.$emit('deleteProduct', id)
+      this.$emit('eventDelete', id)
     },
   },
 }

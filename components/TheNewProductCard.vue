@@ -211,6 +211,8 @@ $warning_color: #ff8484;
   background-color: #fffefb;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.04), 0 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
+  position: sticky;
+  top: 5vh;
 
   & .form-label-text {
     font-weight: 400;

@@ -1,5 +1,5 @@
 <template>
-  <a class="delete-button-container p-2">
+  <a class="delete-button-container p-2" @click="$emit('clickDeleteButton')">
     <img :src="require(`~/assets/icons/delete-icon.svg`)" alt="delete" />
   </a>
 </template>
