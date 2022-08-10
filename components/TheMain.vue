@@ -1,22 +1,36 @@
 <template>
-  <div class="m-5">
-    <the-header />
-    <div class="md:flex sm:flex-row mt-4 px-2">
-      <the-new-product-card
-        :duplicate-product="duplicateProduct"
-        @createNewProduct="createNewProduct"
-      />
-      <products-product-items :products="products" />
+  <div>
+    <transition>
+      <div v-if="isLoading" class="loader-container">
+        <spinner-component />
+      </div>
+    </transition>
+    <div class="m-5">
+      <the-header />
+      <div class="md:flex sm:flex-row mt-4 px-2">
+        <the-new-product-card
+          :duplicate-product="duplicateProduct"
+          @createNewProduct="createNewProduct"
+        />
+        <products-product-items
+          :products="products"
+          @eventDelete="deleteProduct"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import SpinnerComponent from '@/components/assets/spinner/SpinnerComponent'
+
 export default {
   name: 'TheMain',
+  components: { SpinnerComponent },
   data() {
     return {
       duplicateProduct: false,
+      isLoading: true,
       products: [
         {
           id: 1,
@@ -119,6 +133,11 @@ export default {
       ],
     }
   },
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false
+    }, 1000)
+  },
   methods: {
     createNewProduct(product) {
       // Доделать проверку на уже существующий товар
@@ -131,8 +150,43 @@ export default {
         }, 1)
       } else this.duplicateProduct = true
     },
+    deleteProduct(id) {
+      const index = this.products.findIndex((n) => n.id === id)
+      if (index !== -1) {
+        document.getElementById('product-' + id).className =
+          'flex flex-col product-container fadeOutLeft'
+        setTimeout(() => {
+          this.products.splice(index, 1)
+        }, 1000)
+      }
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.loader-container {
+  background: rgb(133, 133, 133);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

@@ -1,5 +1,8 @@
 <template>
-  <div :id="product.id" class="flex flex-col product-container">
+  <div :id="'product-' + product.id" class="flex flex-col product-container">
+    <delete-button-component
+      @clickDeleteButton="$emit('deleteProduct', product.id)"
+    />
     <div class="img-container">
       <img
         class="aspect-video object-cover object-center"
@@ -23,8 +26,10 @@
 </template>
 
 <script>
+import DeleteButtonComponent from '@/components/assets/buttons/DeleteButtonComponent'
 export default {
   name: 'ProductItem',
+  components: { DeleteButtonComponent },
   props: {
     product: {
       type: Object,
@@ -40,6 +45,7 @@ export default {
 $text-color: #3f3f3f;
 
 .product-container {
+  position: relative;
   background: #fffefb;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.04), 0 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
@@ -84,9 +90,25 @@ $text-color: #3f3f3f;
   }
 }
 
+.fadeOutLeft {
+  animation-name: fadeOutLeft;
+  animation-duration: 1s;
+}
+
 .fadeInLeft {
   animation-name: fadeInLeft;
   animation-duration: 1s;
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
 }
 
 @keyframes fadeInLeft {
