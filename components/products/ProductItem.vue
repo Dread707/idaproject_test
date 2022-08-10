@@ -1,14 +1,16 @@
 <template>
   <div :id="product.id" class="flex flex-col product-container">
-    <img
-      class="aspect-video object-cover object-center"
-      :src="
-        product.srcImage.startsWith('http')
-          ? product.srcImage
-          : 'https://lasd.lv/public/assets/no-image.png'
-      "
-      alt=""
-    />
+    <div class="img-container">
+      <img
+        class="aspect-video object-cover object-center"
+        :src="
+          product.srcImage.startsWith('http')
+            ? product.srcImage
+            : 'https://lasd.lv/public/assets/no-image.png'
+        "
+        alt=""
+      />
+    </div>
     <div class="p-4">
       <h1 class="mb-4 product-item-name">{{ product.name }}</h1>
       <p class="mb-5 product-item-description">
@@ -43,30 +45,43 @@ $text-color: #3f3f3f;
   border-radius: 4px;
   cursor: pointer;
   transition: transform 0.1s linear;
-}
 
-.product-item-name {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 25px;
-  color: $text-color;
-}
+  & .product-item-name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 25px;
+    color: $text-color;
+  }
 
-.product-item-description {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
-  color: $text-color;
-}
-.product-item-price {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
-  color: $text-color;
-}
+  & .product-item-description {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: $text-color;
+  }
 
-.product-container:hover {
-  transform: scale(1.1, 1.1);
+  & .product-item-price {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    color: $text-color;
+  }
+
+  & .img-container {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    & img {
+      transition: 0.5s ease all;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  & .img-container:hover img {
+    transform: scale(1.1, 1.1);
+  }
 }
 
 .fadeInLeft {
