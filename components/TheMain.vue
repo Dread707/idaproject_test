@@ -137,12 +137,16 @@ export default {
     setTimeout(() => {
       this.isLoading = false
     }, 1000)
+    if (localStorage.getItem('products')) {
+      this.products = JSON.parse(localStorage.getItem('products'))
+    }
   },
   methods: {
     createNewProduct(product) {
       // Доделать проверку на уже существующий товар
       if (product.id) {
         this.products.unshift(product)
+        localStorage.setItem('products', JSON.stringify(this.products))
         setTimeout(() => {
           document.getElementsByClassName('product-container')[
             product.id
@@ -157,6 +161,7 @@ export default {
           'flex flex-col product-container fadeOutLeft'
         setTimeout(() => {
           this.products.splice(index, 1)
+          localStorage.setItem('products', JSON.stringify(this.products))
         }, 1000)
       }
     },

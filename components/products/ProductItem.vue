@@ -17,10 +17,15 @@
     <div class="p-4">
       <h1 class="mb-4 product-item-name">{{ product.name }}</h1>
       <p class="mb-5 product-item-description">
-        Довольно-таки интересное описание товара в несколько строк.
-        Довольно-таки интересное описание товара в несколько строк
+        {{
+          product.info
+            ? product.info
+            : 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк'
+        }}
       </p>
-      <span class="mb-2 product-item-price">{{ product.price }}</span>
+      <span class="mb-2 product-item-price">
+        {{ formatPrice(product.price) }} ₽
+      </span>
     </div>
   </div>
 </template>
@@ -36,6 +41,12 @@ export default {
       default: () => {
         return {}
       },
+    },
+  },
+  methods: {
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', '.')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
     },
   },
 }
