@@ -18,4 +18,23 @@ html {
 body {
   background-color: $background;
 }
+
+/* Скроллбар для хрома */
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+}
+
+/* Скроллбар для хрома */
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+/* Скролл для Мозилы */
+
+html {
+  scrollbar-width: thin;
+}
 </style>
