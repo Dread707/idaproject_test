@@ -1,143 +1,139 @@
 <template>
-  <div class="select-box">
-    <div class="select-box__current" tabindex="1">
-      <div class="select-box__value">
-        <input
-          id="0"
-          class="select-box__input"
-          type="radio"
-          value="1"
-          checked="checked"
-        />
-        <p class="select-box__input-text py-3 px-5">По умолчанию</p>
-      </div>
-      <div class="select-box__value">
-        <input id="1" class="select-box__input" type="radio" value="2" />
-        <p class="select-box__input-text py-3 px-5">По возрастанию</p>
-      </div>
-      <div class="select-box__value">
-        <input id="2" class="select-box__input" type="radio" value="3" />
-        <p class="select-box__input-text py-3 px-5">По убыванию</p>
-      </div>
-      <span class="select-box__icon" aria-hidden="true" />
+  <div class="custom-select" :tabindex="tabindex" @blur="open = false">
+    <div class="selected" :class="{ open: open }" @click="open = !open">
+      {{ selected }}
     </div>
-    <ul class="select-box__list">
-      <li><label class="select-box__option" for="1">По возрастанию</label></li>
-      <li><label class="select-box__option" for="2">По убыванию</label></li>
-    </ul>
+    <div class="items" :class="{ selectHide: !open }">
+      <div
+        v-for="(option, i) of options"
+        :key="i"
+        @click="
+          selected = option.name
+          open = false
+          $emit('input', option)
+        "
+      >
+        {{ option.name }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'SelectComponent',
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+    default: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    tabindex: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+  },
   data() {
     return {
-      selected: 'По умолчанию',
+      selected: this.default
+        ? this.default
+        : this.options.length > 0
+        ? this.options[0]
+        : null,
+      open: false,
     }
+  },
+  mounted() {
+    this.$emit('input', this.selected)
   },
 }
 </script>
 
 <style lang="scss" scoped>
-$select-label-color: #b4b4b4;
+$select_label_color: #b4b4b4;
+$select_background_color: #fffefb;
+$select_hover_color: #1862bb;
 
-.select-box {
-  background: #fffefb;
+.custom-select {
+  background: $select_background_color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  width: 7vw;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  color: $select-label-color;
-
-  &__current {
-    position: relative;
-    border-radius: 4px;
-    cursor: pointer;
-    outline: none;
-
-    &:focus {
-      & + .select-box__list {
-        opacity: 1;
-        animation-name: none;
-
-        .select-box__option {
-          cursor: pointer;
-        }
-      }
-
-      .select-box__icon {
-        transform: rotate(-45deg);
-      }
-    }
-  }
-
-  &__icon {
-    position: absolute;
-    box-sizing: border-box;
-    top: 40%;
-    right: 20px;
-    width: 6px;
-    height: 6px;
-    transform: rotate(135deg);
-    border-top: 1px solid $select-label-color;
-    border-right: 1px solid $select-label-color;
-  }
-
-  &__value {
-    display: flex;
-  }
-
-  &__input {
-    display: none;
-
-    &:checked + .select-box__input-text {
-      display: block;
-    }
-  }
-
-  &__input-text {
-    display: none;
-    width: 100%;
-    margin: 0;
-    background-color: #fff;
-  }
-
-  &__list {
-    position: absolute;
+  width: 8vw;
+  color: $select_label_color;
+  .selected {
+    background-color: $select_background_color;
+    border-radius: 6px;
+    color: $select_label_color;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 1em 2em;
     width: auto;
-    padding: 0;
-    list-style: none;
-    opacity: 0;
-    animation-name: HideList;
-    animation-duration: 0.5s;
-    animation-delay: 0.5s;
-    animation-fill-mode: forwards;
-    animation-timing-function: step-start;
-    box-shadow: 0 15px 30px -10px transparentize(#000, 0.9);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    &:after.open {
+      transform: rotate(-45deg);
+      border-top: 1px solid $select_hover_color;
+      border-right: 1px solid $select_hover_color;
+    }
+    &:after {
+      position: absolute;
+      color: $select_label_color;
+      width: 6px;
+      height: 6px;
+      content: '';
+      top: 40%;
+      right: 20px;
+      transform: rotate(135deg);
+      border-top: 1px solid $select-label-color;
+      border-right: 1px solid $select-label-color;
+    }
+    &:hover {
+      &:after {
+        border-top: 1px solid $select_hover_color;
+        border-right: 1px solid $select_hover_color;
+      }
+    }
   }
-
-  &__option {
-    display: block;
-    padding: 15px;
-    background-color: #fff;
-
-    &:hover,
-    &:focus {
-      color: #546c84;
-      background-color: #fbfbfb;
+  .selected.open {
+    border-radius: 4px 4px 0 0;
+    transition: 500ms;
+  }
+  .items {
+    width: 8vw;
+    margin-top: 5px;
+    color: $select_label_color;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    position: absolute;
+    background-color: $select_background_color;
+    z-index: 1000;
+    div {
+      color: $select_label_color;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      padding: 1em;
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        color: $select_hover_color;
+        background-color: $select_background_color;
+      }
     }
   }
 }
-
-@keyframes HideList {
-  from {
-    transform: scaleY(1);
-  }
-  to {
-    transform: scaleY(0);
-  }
+.selectHide {
+  display: none;
 }
 </style>

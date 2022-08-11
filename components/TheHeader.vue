@@ -1,7 +1,12 @@
 <template>
   <div class="px-2 flex justify-between">
     <h1>Добавление товара</h1>
-    <select-component />
+    <select-component
+      :options="options"
+      :default="'По умолчанию'"
+      class="select"
+      @input="$emit('handlerSelect', $event)"
+    />
   </div>
 </template>
 
@@ -10,6 +15,15 @@ import SelectComponent from '~/components/assets/select/SelectComponent'
 export default {
   name: 'TheHeader',
   components: { SelectComponent },
+  data() {
+    return {
+      options: [
+        { id: 1, name: 'По убыванию' },
+        { id: 2, name: 'По возрастанию' },
+        { id: 3, name: 'По наименованию' },
+      ],
+    }
+  },
 }
 </script>
 
