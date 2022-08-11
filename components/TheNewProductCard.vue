@@ -74,7 +74,7 @@
             id="price"
             v-model="newProductForm.price.value"
             v-price
-            pattern="[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}"
+            onkeyup="this.value = this.value.replace(/[^0-9 ]/g,'');"
             maxlength="9"
             type="text"
             placeholder="Введите цену"
